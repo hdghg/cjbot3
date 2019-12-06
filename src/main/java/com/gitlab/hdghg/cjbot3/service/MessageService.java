@@ -1,9 +1,11 @@
 package com.gitlab.hdghg.cjbot3.service;
 
+import com.gitlab.hdghg.cjbot3.model.bing.SearchResult;
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchService;
 import com.gitlab.hdghg.cjbot3.module.puk.PukModule;
+import com.google.gson.Gson;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -61,5 +63,9 @@ public class MessageService {
         int id = Integer.parseInt(System.getenv("bot.id"));
         String searchKey = System.getenv("bot.bing.key");
         return new MessageService(key, id, searchKey);
+    }
+
+    public static SearchResult parse(String json) {
+        return new Gson().fromJson(json, SearchResult.class);
     }
 }
