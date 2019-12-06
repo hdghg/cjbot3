@@ -2,6 +2,7 @@ package com.gitlab.hdghg.cjbot3.service;
 
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
+import com.gitlab.hdghg.cjbot3.module.bing.BingSearchService;
 import com.gitlab.hdghg.cjbot3.module.puk.PukModule;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.pengrad.telegrambot.TelegramBot;
@@ -22,7 +23,7 @@ public class MessageService {
     public MessageService(String token, int myId, String searchKey) {
         telegramBot = new TelegramBot.Builder(token).build();
         this.pukModule = new PukModule(myId);
-        this.bingSearchModule = new BingSearchModule(new BingWebSearch(), searchKey);
+        this.bingSearchModule = new BingSearchModule(new BingSearchService(), searchKey);
     }
 
     public void processUpdate(Update update, ExecutionContext context) {
@@ -53,5 +54,12 @@ public class MessageService {
 
                 })
                 .ifPresent(telegramBot::execute);
+    }
+
+    public static MessageService forEnvironment() {
+        String key = System.getenv("bot.key");
+        int id = Integer.parseInt(System.getenv("bot.id"));
+        String searchKey = System.getenv("bot.bing.key");
+        return new MessageService(key, id, searchKey);
     }
 }

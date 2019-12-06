@@ -11,14 +11,11 @@ public class Function {
 
     @FunctionName("HttpTrigger-Java")
     public HttpResponseMessage run(
-            @HttpTrigger(name = "req", methods = {HttpMethod.GET, HttpMethod.POST},
+            @HttpTrigger(name = "req", methods = {HttpMethod.POST},
                     authLevel = AuthorizationLevel.FUNCTION)
                     HttpRequestMessage<Update> request,
             final ExecutionContext context) {
-        String key = System.getenv("bot.key");
-        int id = Integer.parseInt(System.getenv("bot.id"));
-        String searchKey = System.getenv("bot.bing.key");
-        new MessageService(key, id, searchKey)
+        MessageService.forEnvironment()
                 .processUpdate(request.getBody(), context);
         return request.createResponseBuilder(HttpStatus.OK)
                 .body("done")

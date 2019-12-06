@@ -1,4 +1,4 @@
-package com.gitlab.hdghg.cjbot3.service;
+package com.gitlab.hdghg.cjbot3.module.bing;
 
 import com.gitlab.hdghg.cjbot3.model.SearchResults;
 import com.google.gson.Gson;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class BingWebSearch {
+public class BingSearchService {
 
     static String host = "https://api.cognitive.microsoft.com";
     static String path = "/bing/v7.0/search";
