@@ -17,7 +17,8 @@ public class Function {
             final ExecutionContext context) {
         String key = System.getenv("bot.key");
         int id = Integer.parseInt(System.getenv("bot.id"));
-        new MessageService(key, id)
+        String searchKey = System.getenv("bot.bing.key");
+        new MessageService(key, id, searchKey)
                 .processUpdate(request.getBody(), context);
         return request.createResponseBuilder(HttpStatus.OK)
                 .body("done")
