@@ -5,12 +5,12 @@ import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
 import com.gitlab.hdghg.cjbot3.module.bing.SearchClient;
 import com.gitlab.hdghg.cjbot3.module.puk.PukModule;
-import com.google.gson.Gson;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 
 import java.util.Optional;
@@ -49,7 +49,8 @@ public class MessageService {
                 .map(Optional::get)
                 .findFirst()
                 .map(cm -> {
-                    SendMessage sm = new SendMessage(cm.chat, cm.message);
+                    SendMessage sm = new SendMessage(cm.chat, cm.message)
+                            .parseMode(ParseMode.HTML);
                     Optional.ofNullable(cm.replyToMessageId)
                             .ifPresent(sm::replyToMessageId);
                     return sm;
@@ -65,7 +66,4 @@ public class MessageService {
         return new MessageService(key, id, searchKey);
     }
 
-    public static SearchResult parse(String json) {
-        return new Gson().fromJson(json, SearchResult.class);
-    }
 }

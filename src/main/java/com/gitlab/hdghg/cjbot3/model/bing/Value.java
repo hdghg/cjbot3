@@ -1,10 +1,11 @@
 package com.gitlab.hdghg.cjbot3.model.bing;
 
-public class WebPage {
+public class Value {
 
     private String id;
     private String name;
     private String url;
+    private String snippet;
 
     public String getId() {
         return id;
@@ -28,5 +29,13 @@ public class WebPage {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getSnippet() {
+        return snippet;
+    }
+
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
     }
 }

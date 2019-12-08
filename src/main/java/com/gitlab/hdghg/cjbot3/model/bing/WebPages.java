@@ -4,14 +4,14 @@ import java.util.List;
 
 public class WebPages {
 
-    private List<WebPage> value;
+    private List<Value> value;
     private Long totalEstimatedMatches;
 
-    public List<WebPage> getValue() {
+    public List<Value> getValue() {
         return value;
     }
 
-    public void setValue(List<WebPage> value) {
+    public void setValue(List<Value> value) {
         this.value = value;
     }
 
