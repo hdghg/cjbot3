@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public class BingSearchModule implements Module {
 
-    private final BingSearchService search;
+    private final SearchClient search;
     private final String subscriptionKey;
 
-    public BingSearchModule(BingSearchService search, String subscriptionKey) {
+    public BingSearchModule(SearchClient search, String subscriptionKey) {
         this.search = search;
         this.subscriptionKey = subscriptionKey;
     }

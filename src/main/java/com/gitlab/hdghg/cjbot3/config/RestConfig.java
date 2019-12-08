@@ -5,17 +5,36 @@ import okhttp3.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Configuration for rest related API
+ */
 public class RestConfig {
 
+    private static OkHttpClient client;
+    private static Gson gson;
+
     public static OkHttpClient defaultClient() {
-        return new OkHttpClient.Builder()
-                .connectTimeout(75L, TimeUnit.SECONDS)
-                .readTimeout(75L, TimeUnit.SECONDS)
-                .build();
+        if (null == client) {
+            synchronized (RestConfig.class) {
+                if (null == client) {
+                    client = new OkHttpClient.Builder()
+                            .connectTimeout(75L, TimeUnit.SECONDS)
+                            .readTimeout(75L, TimeUnit.SECONDS)
+                            .build();
+                }
+            }
+        }
+        return client;
     }
 
     public static Gson defaultGson() {
-        return new Gson();
+        if (null == gson) {
+            synchronized (RestConfig.class) {
+                if (null == gson) {
+                    gson = new Gson();
+                }
+            }
+        }
+        return gson;
     }
-
 }

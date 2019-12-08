@@ -3,7 +3,7 @@ package com.gitlab.hdghg.cjbot3.service;
 import com.gitlab.hdghg.cjbot3.model.bing.SearchResult;
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
-import com.gitlab.hdghg.cjbot3.module.bing.BingSearchService;
+import com.gitlab.hdghg.cjbot3.module.bing.SearchClient;
 import com.gitlab.hdghg.cjbot3.module.puk.PukModule;
 import com.google.gson.Gson;
 import com.microsoft.azure.functions.ExecutionContext;
@@ -25,7 +25,7 @@ public class MessageService {
     public MessageService(String token, int myId, String searchKey) {
         telegramBot = new TelegramBot.Builder(token).build();
         this.pukModule = new PukModule(myId);
-        this.bingSearchModule = new BingSearchModule(new BingSearchService(), searchKey);
+        this.bingSearchModule = new BingSearchModule(new SearchClient(), searchKey);
     }
 
     public void processUpdate(Update update, ExecutionContext context) {
