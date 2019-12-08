@@ -22,6 +22,15 @@
         <functionResourceGroup>java-functions-group</functionResourceGroup>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <functionAppName>cjbot3prod</functionAppName>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>com.microsoft.azure.functions</groupId>

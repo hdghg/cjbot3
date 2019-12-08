@@ -1,6 +1,5 @@
 package com.gitlab.hdghg.cjbot3.service;
 
-import com.gitlab.hdghg.cjbot3.model.bing.SearchResult;
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
 import com.gitlab.hdghg.cjbot3.module.bing.SearchClient;

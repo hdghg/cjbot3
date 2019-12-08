@@ -7,6 +7,8 @@ import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 import com.pengrad.telegrambot.model.Update;
 
+import java.util.logging.Level;
+
 public class Function {
 
     @FunctionName("HttpTrigger-Java")
@@ -15,8 +17,15 @@ public class Function {
                     authLevel = AuthorizationLevel.FUNCTION)
                     HttpRequestMessage<Update> request,
             final ExecutionContext context) {
-        MessageService.forEnvironment()
-                .processUpdate(request.getBody(), context);
+        try {
+            MessageService.forEnvironment()
+                    .processUpdate(request.getBody(), context);
+        } catch (Exception e) {
+            context.getLogger().log(Level.SEVERE, "Failed to process message", e);
+            return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("fail")
+                    .build();
+        }
         return request.createResponseBuilder(HttpStatus.OK)
                 .body("done")
                 .build();
