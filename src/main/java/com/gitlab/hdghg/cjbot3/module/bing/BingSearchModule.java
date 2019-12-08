@@ -1,7 +1,7 @@
 package com.gitlab.hdghg.cjbot3.module.bing;
 
 import com.gitlab.hdghg.cjbot3.model.ChatMessage;
-import com.gitlab.hdghg.cjbot3.model.SearchResults;
+import com.gitlab.hdghg.cjbot3.model.bing.SearchResult;
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.pengrad.telegrambot.model.Message;
 
@@ -27,13 +27,15 @@ public class BingSearchModule implements Module {
             return Optional.empty();
         }
         String query = text.substring(3);
-        SearchResults searchResults;
+        SearchResult searchResults;
         try {
             searchResults = search.searchWeb(subscriptionKey, query);
         } catch (Exception e) {
             return Optional.empty();
         }
-        String substring = searchResults.jsonResponse.substring(0, 100);
-        return Optional.of(new ChatMessage(message.chat().id(), substring, null));
+        String url = searchResults.getWebPages().getValue().get(0).getUrl();
+        String name = searchResults.getWebPages().getValue().get(0).getName();
+        String result = name + "\n" + url;
+        return Optional.of(new ChatMessage(message.chat().id(), result, message.messageId()));
     }
 }
