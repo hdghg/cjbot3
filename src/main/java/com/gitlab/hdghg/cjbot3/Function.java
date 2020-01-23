@@ -17,15 +17,7 @@ public class Function {
                     authLevel = AuthorizationLevel.FUNCTION)
                     HttpRequestMessage<Update> request,
             final ExecutionContext context) {
-        try {
-            MessageService.forEnvironment()
-                    .processUpdate(request.getBody(), context);
-        } catch (Exception e) {
-            context.getLogger().log(Level.SEVERE, "Failed to process message", e);
-            return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("fail")
-                    .build();
-        }
+        MessageService.forEnvironment().processUpdate(request.getBody(), context);
         return request.createResponseBuilder(HttpStatus.OK)
                 .body("done")
                 .build();
