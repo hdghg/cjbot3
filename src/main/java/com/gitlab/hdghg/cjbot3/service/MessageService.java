@@ -1,5 +1,6 @@
 package com.gitlab.hdghg.cjbot3.service;
 
+import com.gitlab.hdghg.cjbot3.model.ChatMessage;
 import com.gitlab.hdghg.cjbot3.module.Module;
 import com.gitlab.hdghg.cjbot3.module.bing.BingSearchModule;
 import com.gitlab.hdghg.cjbot3.module.bing.SearchClient;
@@ -47,15 +48,22 @@ public class MessageService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst()
-                .map(cm -> {
-                    SendMessage sm = new SendMessage(cm.chat, cm.message)
-                            .parseMode(ParseMode.HTML);
-                    Optional.ofNullable(cm.replyToMessageId)
-                            .ifPresent(sm::replyToMessageId);
-                    return sm;
-
-                })
+                .map(this::toSendMessage)
                 .ifPresent(telegramBot::execute);
+    }
+
+    /**
+     * Convert module-agnostic entity to a telegram response
+     * @param chatMessage Message abstraction
+     * @return Telegram's entity containing message
+     */
+    SendMessage toSendMessage(ChatMessage chatMessage) {
+        var result = new SendMessage(chatMessage.chat, chatMessage.message);
+        result.parseMode(ParseMode.HTML);
+        if (null != chatMessage.replyToMessageId) {
+            result.replyToMessageId(chatMessage.replyToMessageId);
+        }
+        return result;
     }
 
     public static MessageService forEnvironment() {
