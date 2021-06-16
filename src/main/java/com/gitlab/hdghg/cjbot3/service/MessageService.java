@@ -11,7 +11,9 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.request.GetMe;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.GetMeResponse;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -64,6 +66,10 @@ public class MessageService {
             result.replyToMessageId(chatMessage.replyToMessageId);
         }
         return result;
+    }
+
+    public GetMeResponse getMe() {
+        return telegramBot.execute(new GetMe());
     }
 
     public static MessageService forEnvironment() {
