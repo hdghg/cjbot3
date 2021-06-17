@@ -65,6 +65,8 @@
                 <artifactId>azure-functions-maven-plugin</artifactId>
                 <version>${azure.functions.maven.plugin.version}</version>
                 <configuration>
+                    <!-- function app name -->
+                    <appName>${functionAppName}</appName>
                     <appSettings>
                         <property>
                             <name>FUNCTIONS_EXTENSION_VERSION</name>
