@@ -1,5 +1,6 @@
 package com.gitlab.hdghg.cjbot3;
 
+import com.gitlab.hdghg.cjbot3.service.BuildInfoService;
 import com.gitlab.hdghg.cjbot3.service.MessageService;
 import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
@@ -61,6 +62,7 @@ public class Function {
         sb.append(null != token ? "OK" : "Not set (mandatory)").append("\nbot.id: ");
         sb.append(botIdString).append("\nbot.bing.key: ");
         sb.append(null == botBingKey ? "NOT SET" : "OK").append("\nWebhook: [TBD]");
+        sb.append("\npom.properties:\n").append(new BuildInfoService().mavenBuildInfo());
 
         return request.createResponseBuilder(HttpStatus.OK)
                 .header("Content-Type", "text/plain")
