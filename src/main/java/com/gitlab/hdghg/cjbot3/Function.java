@@ -132,7 +132,7 @@ public class Function {
             return request.createResponseBuilder(HttpStatus.OK).build();
         }
 
-        var actionString = request.getQueryParameters().get("action");
+        var actionString = request.getQueryParameters().getOrDefault("action", "");
         Callable<String> action;
         switch (actionString) {
             case "delete":
