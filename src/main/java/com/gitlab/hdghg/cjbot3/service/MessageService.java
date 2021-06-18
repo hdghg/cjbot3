@@ -10,10 +10,14 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.User;
+import com.pengrad.telegrambot.model.WebhookInfo;
 import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.request.DeleteWebhook;
 import com.pengrad.telegrambot.request.GetMe;
+import com.pengrad.telegrambot.request.GetWebhookInfo;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.GetMeResponse;
+import com.pengrad.telegrambot.response.BaseResponse;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -56,6 +60,7 @@ public class MessageService {
 
     /**
      * Convert module-agnostic entity to a telegram response
+     *
      * @param chatMessage Message abstraction
      * @return Telegram's entity containing message
      */
@@ -68,8 +73,16 @@ public class MessageService {
         return result;
     }
 
-    public GetMeResponse getMe() {
-        return telegramBot.execute(new GetMe());
+    public User getMe() {
+        return telegramBot.execute(new GetMe()).user();
+    }
+
+    public WebhookInfo getWebhook() {
+        return telegramBot.execute(new GetWebhookInfo()).webhookInfo();
+    }
+
+    public BaseResponse deleteWebhook() {
+        return telegramBot.execute(new DeleteWebhook());
     }
 
     public static MessageService forEnvironment() {

@@ -5,10 +5,15 @@ import java.nio.charset.StandardCharsets;
 
 public class BuildInfoService {
 
+    /**
+     * Obtain content of JAR's build information stored in pom.properties file.
+     * @return File content in single String
+     */
     public String mavenBuildInfo() {
-        try (var is = BuildInfoService.class.getResourceAsStream("/META-INF/maven/com.gitlab.hdghg/cjbot3/pom.properties")) {
+        var pomProperties = "/META-INF/maven/com.gitlab.hdghg/cjbot3/pom.properties";
+        try (var is = getClass().getResourceAsStream(pomProperties)) {
             if (null != is) {
-                byte[] bytes = is.readAllBytes();
+                var bytes = is.readAllBytes();
                 return new String(bytes, StandardCharsets.UTF_8);
             } else {
                 return "pom.properties not found";

@@ -7,6 +7,8 @@ import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.WebhookInfo;
+import com.pengrad.telegrambot.response.BaseResponse;
 
 import java.util.logging.Level;
 
@@ -38,7 +40,7 @@ public class Function {
         try {
             MessageService messageService = new MessageService(token, 0, null);
             var me = messageService.getMe();
-            Integer id = me.user().id();
+            Integer id = me.id();
             String botId = System.getenv("bot.id");
             if (null != botId) {
                 try {
@@ -69,4 +71,74 @@ public class Function {
                 .body(sb.toString())
                 .build();
     }
+
+    /**
+     * Provide configuration and suggestions
+     */
+    @FunctionName("webhook")
+    public HttpResponseMessage webhook(
+            @HttpTrigger(name = "webhook", methods = {HttpMethod.GET},
+                    authLevel = AuthorizationLevel.FUNCTION)
+                    HttpRequestMessage<?> request,
+            ExecutionContext context) {
+        String code = request.getQueryParameters().get("code");
+        String innerHtml;
+        try {
+            WebhookInfo webhook = MessageService.forEnvironment().getWebhook();
+            String url = webhook.url();
+            var sb = new StringBuilder("<p>Webhook url: ");
+            if (null == url || "".equals(url)) {
+                sb.append("URL is not set");
+            } else {
+                sb.append(url);
+            }
+            sb.append("</p>\n");
+            Integer pendingUpdateCount = webhook.pendingUpdateCount();
+            sb.append("<p>Pending update count: ").append(pendingUpdateCount).append("</p>\n");
+            sb.append("<a href='deleteWebhook?code=").append(code).append("'>Delete webhook</a>\n");
+            sb.append("<a href='createWebhook?code=").append(code).append("'>Create webhook</a>\n");
+            innerHtml = sb.toString();
+        } catch (Exception e) {
+            context.getLogger().log(Level.WARNING, "Failed to create Message Service: ", e);
+            innerHtml = "<p style='color:red'>ERROR" + e.getMessage() + "</p>";
+        }
+        return request.createResponseBuilder(HttpStatus.OK)
+                .header("Content-Type", "text/html")
+                .body(wrap(innerHtml))
+                .build();
+    }
+
+    /**
+     * Provide configuration and suggestions
+     */
+    @FunctionName("deleteWebhook")
+    public HttpResponseMessage deleteWebhook(
+            @HttpTrigger(name = "deleteWebhook", methods = {HttpMethod.GET},
+                    authLevel = AuthorizationLevel.FUNCTION)
+                    HttpRequestMessage<?> request,
+            ExecutionContext context) {
+        String innerHtml;
+        BaseResponse baseResponse = MessageService.forEnvironment().deleteWebhook();
+        if (baseResponse.isOk()) {
+            String code = request.getQueryParameters().get("code");
+            return request.createResponseBuilder(HttpStatus.FOUND)
+                    .header("Location", "webhook?code=" + code)
+                    .build();
+        }
+        return request.createResponseBuilder(HttpStatus.OK)
+                .header("Content-Type", "text/plain")
+                .body("Failed to delete webhook: " + baseResponse.errorCode() + " " + baseResponse.description())
+                .build();
+    }
+
+
+    private String wrap(String innerHtml) {
+        var sb = new StringBuilder("<!DOCTYPE html>\n");
+        sb.append("<html><head><title>Webhook setup</title><meta charset='utf-8'></head>");
+        sb.append("<body>");
+        sb.append(innerHtml);
+        sb.append("</body></html>");
+        return sb.toString();
+    }
+
 }
