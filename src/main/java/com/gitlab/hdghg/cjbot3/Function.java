@@ -107,9 +107,9 @@ public class Function {
         sb.append("<p>Manage webhook:</p>");
         sb.append("Code: <input type='text' required name='code' value='");
         sb.append(null == code ? "" : code).append("'><br>");
-        sb.append("<input type='radio' name='action' value='delete' selected>Delete<br>");
+        sb.append("<input type='radio' name='action' value='delete' checked>Delete<br>");
         sb.append("<input type='radio' name='action' value='create'>Create<br>");
-        sb.append("<input type='submit'>Delete</input>");
+        sb.append("<input type='submit'>");
         sb.append("</form>");
         sb.append("<br>");
         return request.createResponseBuilder(HttpStatus.OK)
