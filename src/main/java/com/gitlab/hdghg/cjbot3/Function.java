@@ -131,7 +131,9 @@ public class Function {
                 action = () -> "";
         }
         try {
-            action.call();
+            String result = action.call();
+            String log = String.format("Successfully executed action '%s' with result string '%s'", actionString, result);
+            context.getLogger().log(Level.INFO, log);
             String code = request.getQueryParameters().get("code");
             return request.createResponseBuilder(HttpStatus.FOUND)
                     .header("Location", "webhookConfig?code=" + code)
