@@ -125,8 +125,10 @@ public class Function {
         switch (actionString) {
             case "delete":
                 action = () -> new ConfigurationService().deleteWebHook();
+                break;
             case "create":
                 action = () -> new ConfigurationService().activateWebHook(request.getUri().toString());
+                break;
             default:
                 action = () -> "";
         }

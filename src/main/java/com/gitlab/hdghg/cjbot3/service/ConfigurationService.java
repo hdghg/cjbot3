@@ -31,7 +31,7 @@ public class ConfigurationService {
             throw new ActionFailedException(text, e);
         }
         if (r.isOk()) {
-            return "webhook created";
+            return "webhook created for url: " + url;
         }
         var text = format("Could not create webhook, code: {0}, message: {1}", r.errorCode(), r.description());
         throw new ActionFailedException(text);
