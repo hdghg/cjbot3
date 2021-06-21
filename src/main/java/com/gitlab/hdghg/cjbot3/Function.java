@@ -15,24 +15,12 @@ import java.util.logging.Level;
 
 public class Function {
 
-    @FunctionName("HttpTrigger-Java")
-    public HttpResponseMessage run(
-            @HttpTrigger(name = "req", methods = {HttpMethod.POST},
-                    authLevel = AuthorizationLevel.FUNCTION)
-                    HttpRequestMessage<Update> request,
-            ExecutionContext context) {
-        MessageService.forEnvironment().processUpdate(request.getBody(), context);
-        return request.createResponseBuilder(HttpStatus.OK)
-                .body("done")
-                .build();
-    }
-
     /**
      * Provide configuration and suggestions
      */
-    @FunctionName("setup")
-    public HttpResponseMessage setup(
-            @HttpTrigger(name = "setup", methods = {HttpMethod.GET},
+    @FunctionName("health")
+    public HttpResponseMessage health(
+            @HttpTrigger(name = "req", methods = {HttpMethod.GET},
                     authLevel = AuthorizationLevel.ADMIN)
                     HttpRequestMessage<?> request,
             ExecutionContext context) {
@@ -138,7 +126,7 @@ public class Function {
             case "delete":
                 action = () -> new ConfigurationService().deleteWebHook();
             case "create":
-                action = () -> new ConfigurationService().createWebHook("TODO");
+                action = () -> new ConfigurationService().activateWebHook(request.getUri().toString());
             default:
                 action = () -> "";
         }

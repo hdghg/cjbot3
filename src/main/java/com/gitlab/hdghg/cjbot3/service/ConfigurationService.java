@@ -22,7 +22,18 @@ public class ConfigurationService {
         throw new ActionFailedException(text);
     }
 
-    public String createWebHook(String url) throws ActionFailedException  {
-        return "";
+    public String activateWebHook(String url) throws ActionFailedException  {
+        BaseResponse r;
+        try {
+            r = MessageService.forEnvironment().activateWebhook(url);
+        } catch (Exception e) {
+            String text = format("Failed to create webhook {0} {1}", e.getClass().getSimpleName(), e.getMessage());
+            throw new ActionFailedException(text, e);
+        }
+        if (r.isOk()) {
+            return "webhook created";
+        }
+        var text = format("Could not create webhook, code: {0}, message: {1}", r.errorCode(), r.description());
+        throw new ActionFailedException(text);
     }
 }

@@ -13,10 +13,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.model.WebhookInfo;
 import com.pengrad.telegrambot.model.request.ParseMode;
-import com.pengrad.telegrambot.request.DeleteWebhook;
-import com.pengrad.telegrambot.request.GetMe;
-import com.pengrad.telegrambot.request.GetWebhookInfo;
-import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.*;
 import com.pengrad.telegrambot.response.BaseResponse;
 
 import java.util.Optional;
@@ -83,6 +80,10 @@ public class MessageService {
 
     public BaseResponse deleteWebhook() {
         return telegramBot.execute(new DeleteWebhook());
+    }
+
+    public BaseResponse activateWebhook(String url) {
+        return telegramBot.execute(new SetWebhook().url(url).maxConnections(1));
     }
 
     public static MessageService forEnvironment() {
