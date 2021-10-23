@@ -29,12 +29,12 @@ public class Function {
         try {
             MessageService messageService = new MessageService(token, 0, null);
             var me = messageService.getMe();
-            Integer id = me.id();
+            Long id = me.id();
             String botId = System.getenv("bot.id");
             if (null != botId) {
                 try {
-                    Integer botIdInteger = Integer.valueOf(botId);
-                    if (botIdInteger.equals(id)) {
+                    Long botIdLong = Long.valueOf(botId);
+                    if (botIdLong.equals(id)) {
                         botIdString = "VALUE IS CORRECT: " + botId;
                     } else {
                         botIdString = "VALUE IS INCORRECT: " + botId + " SHOULD BE: " + id;
