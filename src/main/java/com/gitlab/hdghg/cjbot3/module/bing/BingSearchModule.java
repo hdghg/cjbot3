@@ -43,7 +43,8 @@ public class BingSearchModule implements Module {
             return Optional.empty();
         }
         if (null == searchResult.getWebPages()) {
-            log.warning("SearchResult has no 'webPages' for query: '" + query + "'");
+            log.warning("SearchResult has no 'webPages' for query: '" + query
+                    + "'. The error is " + searchResult.getError());
             return Optional.empty();
         }
         List<Value> valueList = searchResult.getWebPages().getValue();

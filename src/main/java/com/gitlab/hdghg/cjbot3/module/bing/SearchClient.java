@@ -43,6 +43,9 @@ public class SearchClient {
                 .build();
         try {
             var response = RestConfig.defaultClient().newCall(request).execute();
+            if (200 != response.code()) {
+                log.warning("Search status code is abnormal: " + response.code());
+            }
             ResponseBody body = response.body();
             if (null != body) {
                 return body.string();
