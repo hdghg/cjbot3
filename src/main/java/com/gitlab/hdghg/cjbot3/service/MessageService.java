@@ -25,7 +25,7 @@ public class MessageService {
     private final PukModule pukModule;
     private final BingSearchModule bingSearchModule;
 
-    public MessageService(String token, int myId, String searchKey) {
+    public MessageService(String token, long myId, String searchKey) {
         telegramBot = new TelegramBot.Builder(token).build();
         this.pukModule = new PukModule(myId);
         this.bingSearchModule = new BingSearchModule(new SearchClient(), searchKey);
@@ -88,7 +88,7 @@ public class MessageService {
 
     public static MessageService forEnvironment() {
         String key = System.getenv("bot.key");
-        int id = Integer.parseInt(System.getenv("bot.id"));
+        long id = Long.parseLong(System.getenv("bot.id"));
         String searchKey = System.getenv("bot.bing.key");
         return new MessageService(key, id, searchKey);
     }

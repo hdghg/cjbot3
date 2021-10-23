@@ -18,9 +18,9 @@ public class PukModule implements Module {
 
     private Random rand = new Random();
 
-    private final int botId;
+    private final long botId;
 
-    public PukModule(int botId) {
+    public PukModule(long botId) {
         this.botId = botId;
     }
 
@@ -34,7 +34,7 @@ public class PukModule implements Module {
         if (null == from) {
             return Optional.empty();
         }
-        Integer replyToUserId = from.id();
+        Long replyToUserId = from.id();
         if (null == replyToUserId) {
             return Optional.empty();
         }
